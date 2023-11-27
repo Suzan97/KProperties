@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<section id="aa-menu-area">
+    <nav class="navbar navbar-default main-navbar" role="navigation">  
+      <div class="container">
+        <div class="navbar-header">
+          <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- LOGO -->                                               
+          <!-- Text based logo -->
+          <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
+          <!-- Image based logo -->
+          <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->                     
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+             <li class="dropdown active">
+              <li><a href="{% url 'property' %}">PROPERTIES</a></li> 
+            </li>
+            <li><a href="{% url 'gallery' %}">GALLERY</a></li>                                         
+            <li><a href="{% url 'contact' %}">CONTACT</a></li>
+          </ul>                               
+        </div><!--/.nav-collapse -->       
+      </div>          
+    </nav> 
+  </section>
+
+<section id="aa-property-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-property-header-inner">
+            <h2>Gallery</h2>
+            <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">HOME</a></li>            
+            <li class="active">Gallery</li>
+          </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="aa-gallery">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-gallery-area">
+            <div class="aa-title">
+              <h2>Gallery View</h2>
+              <span></span>
+               <p>Step into a world of captivating beauty and architectural marvels – our gallery showcases the finest properties, each a masterpiece of design and luxury.</p>
+            </div>
+            <!-- Start gallery -->
+            <div class="aa-gallery-content">
+              <div class="aa-gallery-top">
+                <!-- Start gallery menu -->
+                <ul>
+                  <li data-filter="all" class="filter active">All</li>
+                  {% for cat in category %}                
+                  <li data-filter=".{{cat.name|lower}}" class="filter">{{cat.name}}</li>
+                    {% endfor %}
+                </ul>
+              </div>
+              <!-- Start gallery image -->
+              <div id="mixit-container" class="aa-gallery-body">
+                <!-- start single gallery image -->
+                {% for cat in category %}
+                <div class="aa-single-gallery mix {{cat.name|lower}}">  
+                    {% for i in gallery %} 
+                        {% if i.category == cat %}              
+                  <div class="aa-single-gallery-item">
+                    <div class="aa-single-gallery-img">
+                      <a href="{% url 'property_detail' slug=i.property.slug %}"><img src="{{i.Image.url}}" alt="img"></a>
+                    </div>
+                    <div class="aa-single-gallery-info">
+                      <a class="fancybox" data-fancybox-group="gallery" href="{{i.Image.url}}"><span class="fa fa-eye">
+                      <a class="aa-link" href="{% url 'property_detail' slug=i.property.slug %}"><span class="fa fa-link"></span></a>
+                    </div>                  
+                  </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <!-- start single gallery image -->
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}

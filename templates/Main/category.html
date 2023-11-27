@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<section id="aa-menu-area">
+    <nav class="navbar navbar-default main-navbar" role="navigation">  
+      <div class="container">
+        <div class="navbar-header">
+          <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- LOGO -->                                               
+          <!-- Text based logo -->
+          <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
+          <!-- Image based logo -->
+          <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->                     
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+            <li><a href="{% url 'home' %}">HOME</a></li>
+             <li class="dropdown active">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'property' %}">PROPERTIES <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">                
+                <li><a href="{% url 'property' %}">All Properties</a></li>
+                {% for cat in categories %}
+                  <li><a href="{% url 'property_category' cat %}">{{cat}}</a></li>     
+                {% endfor %}                                      
+              </ul>
+            </li>
+            <li><a href="{% url 'gallery' %}">GALLERY</a></li>                                         
+            <li><a href="{% url 'contact' %}">CONTACT</a></li>
+          </ul>                               
+        </div><!--/.nav-collapse -->       
+      </div>          
+    </nav> 
+  </section>
+
+<section id="aa-property-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-property-header-inner">
+            <h2>{{category}} PROPERTIES</h2>
+            <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">HOME</a></li>            
+            <li class="active">Results</li>
+          </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="aa-properties">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="aa-properties-content">
+            <!-- start properties content head -->
+            <div class="aa-properties-content-head">              
+              <div class="aa-properties-content-head-left">
+                <form action="" class="aa-sort-form">
+                  <label for="">Sort by</label>
+                  <select name="">
+                    <option value="1" selected="Default">Default</option>
+                    <option value="2">Name</option>
+                    <option value="3">Price</option>
+                    <option value="4">Date</option>
+                  </select>
+                </form>
+                <form action="" class="aa-show-form">
+                  <label for="">Show</label>
+                  <select name="">
+                    <option value="1" selected="12">6</option>
+                    <option value="2">12</option>
+                    <option value="3">24</option>
+                  </select>
+                </form>
+              </div>
+              <div class="aa-properties-content-head-right">
+                <a id="aa-grid-properties" href="#"><span class="fa fa-th"></span></a>
+                <a id="aa-list-properties" href="#"><span class="fa fa-list"></span></a>
+              </div>            
+            </div>
+                <!-- Start properties content body -->
+                <div class="aa-properties-content-body">
+                    {% if property %}
+                    <ul class="aa-properties-nav">                 
+                    {% for i in property %}
+                      <li>
+                        <article class="aa-properties-item">
+                          <a class="aa-properties-item-img" href="#">
+                            <img alt="img" src="{{i.Property_image.url}}">
+                          </a>
+                          <div class="aa-tag for-rent">
+                            {{i.Category.name}}
+                          </div>
+                          <div class="aa-properties-item-content">
+                            <div class="aa-properties-info">
+                              <span>5 Rooms</span>
+                              <span>2 Beds</span>
+                              <span>3 Baths</span>
+                              <span>1100 SQ FT</span>
+                            </div>
+                            <div class="aa-properties-about">
+                              <h3><a href="{{i.get_absolute_url | safe }}">{{i.Property_name}}</a></h3>
+                              <p>{{i.Short_description}}</p>                      
+                            </div>
+                            <div class="aa-properties-detial">
+                              <span class="aa-price">
+                                {{i.Currency}} {{i.Price}}
+                              </span>
+                              <a class="aa-secondary-btn" href="{{i.get_absolute_url | safe }}">View Details</a>
+                            </div>
+                          </div>
+                        </article>
+                      </li>
+                      {% endfor %}
+                    </ul>       
+                 
+                </div>
+
+                <div class="aa-properties-content-bottom">
+                  <nav>
+                    <ul class="pagination">
+                      {% if property.has_previous %}
+                      <li>
+                        <a href="?page=1" aria-label="First">
+                          <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="?page={{ property.previous_page_number }}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      {% endif %}
+                      
+                      {% for page_num in property.paginator.page_range %}
+                      <li {% if property.number == page_num %}class="active"{% endif %}>
+                        <a href="?page={{ page_num }}">{{ page_num }}</a>
+                      </li>
+                      {% endfor %}
+                      
+                      {% if property.has_next %}
+                      <li>
+                        <a href="?page={{ property.next_page_number }}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="?page={{ property.paginator.num_pages }}" aria-label="Last">
+                          <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                      </li>
+                      {% endif %}
+                      {% else %}
+                      <h2>No properties match your search criteria</h2>
+                      {% endif %}
+                    </ul>
+                  </nav>
+                </div>
+              
+                </div>
+              </div>
+              <!-- Start properties sidebar -->
+        <div class="col-md-4">
+            <aside class="aa-properties-sidebar">
+                <!-- Start Single properties sidebar -->
+                <div class="aa-properties-single-sidebar">
+                  <h3>Properties Search</h3>
+                  <form method="GET" action="{% url 'search_results' %}">
+                    <div class="aa-single-advance-search">
+                      <input type="text" name="location" placeholder="Type Your Location">
+                    </div>
+                    <div class="aa-single-advance-search">
+                      <input type="text" name="name" placeholder="Property Name">
+                    </div>
+                    <div class="aa-single-advance-search">
+                      <select name="category">
+                       <option selected="" value="">Category</option>
+                        {% for cat in sub_cat %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="aa-single-advance-search">
+                      <input type="submit" value="Search" class="aa-search-btn">
+                    </div>
+                  </form>
+                </div>
+              
+                <!-- Start Single properties sidebar -->
+              <div class="aa-properties-single-sidebar">
+                  <h3>Popular Properties</h3>
+                  {% for i in pop_property %}
+                  <div class="media">
+                    <div class="media-left">
+                      <a href="{{i.get_absolute_url }}">
+                        <img class="media-object" src="{{i.Property_image.url}}" alt="img">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h4 class="media-heading"><a href="{{i.get_absolute_url }}">{{i.Property_name}}</a></h4>
+                      <p>{{i.Short_description}}</p>                
+                      <span>{{i.Currency}}{{i.Price}}</span>
+                    </div>              
+                  </div>
+                  {% endfor %}
+                </div>
+              </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}

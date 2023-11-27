@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<!-- Start menu section -->
+<section id="aa-menu-area">
+  <nav class="navbar navbar-default main-navbar" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- LOGO -->
+        <!-- Text based logo -->
+        <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
+        <!-- Image based logo -->
+        <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+          <li class="active"><a href="{% url 'home' %}">HOME</a></li>
+          <li><a href="{% url 'property' %}">PROPERTIES</a></li>
+          {% for cat in main_cat %}
+          <li><a href="{% url 'category' cat %}">{{cat.name}}</a></li>
+          {% endfor %}
+          <li><a href="{% url 'gallery' %}">GALLERY</a></li>
+          <li><a href="{% url 'contact' %}">CONTACT</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</section>
+
+<!-- Start slider  -->
+<section id="aa-slider">
+  <div class="aa-slider-area">
+    <!-- Top slider -->
+    <div class="aa-top-slider">
+      <!-- Top slider single slide -->
+      {% for i in slider %}
+      <div class="aa-top-slider-single">
+        <img src="{{i.Image}}" alt="img">
+        <!-- Top slider content -->
+        <div class="aa-top-slider-content">
+          <span class="aa-top-slider-catg">{{i.Property_name}}</span>
+          <h2 class="aa-top-slider-title">{{i.size}}</h2>
+          <p class="aa-top-slider-location"><i class="fa fa-map-marker"></i>{{i.Location}}</p>
+          <span class="aa-top-slider-off">{{i.Discount}}</span>
+          <p class="aa-top-slider-price">{{i.Currency}} {{i.Price}}</p>
+          <a href="#" class="aa-top-slider-btn">Read More <span class="fa fa-angle-double-right"></span></a>
+        </div>
+        <!-- / Top slider content -->
+      </div>
+      {% endfor %}
+      <!-- / Top slider single slide -->
+    </div>
+  </div>
+</section>
+<!-- End slider  -->
+
+<!-- Advance Search -->
+<section id="aa-advance-search">
+  <div class="container">
+    <div class="aa-advance-search-area">
+      <div class="form">
+        <div class="aa-advance-search-top">
+          <form method="GET" action="{% url 'search_results' %}">
+            <div class="col-md-4">
+              <div class="aa-single-advance-search">
+                <input type="text" name="location" placeholder="Type Your Location">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="aa-single-advance-search">
+                <input type="text" name="name" placeholder="Property Name">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="aa-single-advance-search">
+                <select name="category">
+                  <option selected value="">Category</option>
+                  {% for cat in sub_cat %}
+                  <option value="{{ cat.id }}">{{ cat.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="aa-single-advance-search">
+                <input class="aa-search-btn" type="submit" value="Search">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / Advance Search -->
+
+<!-- About us -->
+<section id="aa-about-us">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="aa-about-us-area">
+          <div class="row">
+            <div class="col-md-12"> <!-- Adjust the column width to 12 to center the content -->
+              <div class="aa-about-us-right">
+                <div class="aa-title">
+                  <h2>About Us</h2>
+                  <span></span>
+                </div>
+                <p>Khumo Properties limited is one of the established real estate consulting brands in Kenya. Our
+                  listing comprises commercial residential, land, hotels/leisure properties and property services. Our
+                  consultants have experience in the property industry, and are ready and willing to offer information
+                  and advice on property investment opportunities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- / About us -->
+
+
+<!-- Latest property -->
+<section id="aa-latest-property">
+  <div class="container">
+    <div class="aa-latest-property-area">
+      <div class="aa-title">
+        <h2>Latest Properties</h2>
+        <span></span>
+        <p>This are our latest properties, check them out.</p>
+      </div>
+      <div class="aa-latest-properties-content">
+        <div class="row">
+          {% for i in property %}
+          <div class="col-md-3">
+            <article class="aa-properties-item">
+              <a href="{{i.get_absolute_url | safe }}" class="aa-properties-item-img">
+                <img src="{{i.Property_image.url}}" alt="img">
+              </a>
+              <div class="aa-properties-item-content">
+                <div class="aa-properties-about">
+                  <h3><a href="{{i.get_absolute_url | safe }}">{{i.Property_name | safe }}</a></h3>
+                  <p>{{i.Short_description}}</p>
+                </div>
+                <div class="aa-properties-detial">
+                  <span class="aa-price">
+                    {{i.Currency | safe }}{{i.Price | safe }}
+                  </span>
+                  <a href="{{i.get_absolute_url | safe }}" class="aa-secondary-btn">View Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+          {% endfor %}
+          <div class="aa-properties-content-bottom">
+            {# "View More" button #}
+            <div class="aa-properties-view-more">
+                <a href="{% url 'latest' latest %}" class="aa-secondary-btn">View More</a>
+            </div>
+        </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / Latest property -->
+
+{% endblock %}

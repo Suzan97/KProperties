@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">    
+        <title>Khumo Properties</title>
+         <!-- google maps API -->
+         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8jUR4CYmW6HuWmeX3EnQ3w8verzZHiFA&libraries=places">           
+        </script>
+        <script src="{% static 'js/admin_maps.js' %}"></script>
+        
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+        <!-- Font awesome -->
+        <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+        <!-- Bootstrap -->
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">   
+        <!-- slick slider -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/slick.css' %}">
+        <!-- price picker slider -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/nouislider.css' %}">
+        <!-- Fancybox slider -->
+        <link rel="stylesheet" href="{% static 'css/jquery.fancybox.css' %}" type="text/css" media="screen" /> 
+        <!-- Theme color -->
+        <link id="switcher" href="{% static 'css/theme-color/default-theme.css' %}" rel="stylesheet">     
+
+        <!-- Main style sheet -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">    
+
+    
+        <!-- Google Font -->
+        <link href='https://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>    
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+
+
+    </head>
+    <body>
+        <div id="aa-preloader-area">
+            <div class="pulse"></div>
+        </div>
+        <!-- SCROLL TOP BUTTON -->
+        <a class="scrollToTop" href="#"><i class="fa fa-angle-double-up"></i></a>
+        <!-- END SCROLL TOP BUTTON -->
+
+        <!-- header-start -->
+        {% include 'includes/header.html' %}
+        <!-- header-end -->
+        
+        {% block content %}
+
+        {% endblock %}
+
+
+         <!-- footer-start -->
+         {% include 'includes/footer.html' %}
+         <!-- footer-end -->
+
+         <!-- Google maps script -->
+        <script src="{% static 'js/maps.js' %}"></script>
+        <script>
+            var input = document.getElementById('location-autocomplete');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        </script>
+         <!-- jQuery library -->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+        <script src="{% static 'js/jquery.min.js' %}"></script>   
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{% static 'js/bootstrap.js' %}"></script>   
+        <!-- slick slider -->
+        <script type="text/javascript" src="{% static 'js/slick.js' %}"></script>
+        <!-- Price picker slider -->
+        <script type="text/javascript" src="{% static 'js/nouislider.js' %}"></script>
+        <!-- mixit slider -->
+        <script type="text/javascript" src="{% static 'js/jquery.mixitup.js' %}"></script>
+        <!-- Add fancyBox -->        
+        <script type="text/javascript" src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+        <!-- Custom js -->
+        <script src="{% static 'js/custom.js' %}"></script> 
+        <!-- Custom gallery script -->
+        <script src="{% static 'js/gallery_admin.js' %}"></script>
+        <!-- Carousel script -->
+        <script src="{% static 'js/carousel.js' %}"></script>
+        
+       
+
+
+      
+  
+
+        
+    </body>
+</html>
