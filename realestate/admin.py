@@ -19,8 +19,7 @@ class PropertyAdminForm(forms.ModelForm):
             'Location': forms.TextInput(attrs={'id': 'location-autocomplete'}),
         }
 
-    class Media:
-        js = ('https://maps.googleapis.com/maps/api/js?key=AIzaSyB8jUR4CYmW6HuWmeX3EnQ3w8verzZHiFA&libraries=places', 'js/admin_maps.js')
+   
 
 class Property_Admin(admin.ModelAdmin):
     search_fields = ['Property_name']
