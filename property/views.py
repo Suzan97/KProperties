@@ -60,16 +60,15 @@ def CAT_DETAIL(request, category):
                'pop_property': pop_property, 'categories':categories, 'sub_cat':sub_cat}
     return render(request, 'Main/category.html', context)
 
-def PROP_LATEST(request,latest):
+def PROP_LATEST(request):
     property = Property.objects.all()
-    latest_list = latest.split(',')
-    latest_prop = Property.objects.filter(name__in=latest_list)
+    latest_prop = Property.objects.order_by('-date_added')
     pop_property = Property.objects.order_by('-page_visits')[:3]
 
-    items_per_page = 4
+    items_per_page = 6
     property_page = paginate_queryset(latest_prop, request, items_per_page)
 
-    context = {'property':property, 'latest_prop':latest_prop }
+    context = {'property':property, 'property':property_page, 'latest_prop':latest_prop }
 
     return render(request,  'Main/property_latest.html', context)  
 

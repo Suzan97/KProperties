@@ -167,7 +167,7 @@
           <div class="aa-properties-content-bottom">
             {# "View More" button #}
             <div class="aa-properties-view-more">
-                <a href="{% url 'latest' latest %}" class="aa-secondary-btn">View More</a>
+                <a href="{% url 'latest'  %}" class="aa-secondary-btn">View More</a>
             </div>
         </div>
         
@@ -177,5 +177,51 @@
   </div>
 </section>
 <!-- / Latest property -->
+
+<!-- Popular property -->
+<section id="aa-latest-property">
+  <div class="container">
+    <div class="aa-latest-property-area">
+      <div class="aa-title">
+        <h2>Latest Properties</h2>
+        <span></span>
+        <p>This are our latest properties, check them out.</p>
+      </div>
+      <div class="aa-latest-properties-content">
+        <div class="row">
+          {% for i in property %}
+          <div class="col-md-3">
+            <article class="aa-properties-item">
+              <a href="{{i.get_absolute_url | safe }}" class="aa-properties-item-img">
+                <img src="{{i.Property_image.url}}" alt="img">
+              </a>
+              <div class="aa-properties-item-content">
+                <div class="aa-properties-about">
+                  <h3><a href="{{i.get_absolute_url | safe }}">{{i.Property_name | safe }}</a></h3>
+                  <p>{{i.Short_description}}</p>
+                </div>
+                <div class="aa-properties-detial">
+                  <span class="aa-price">
+                    {{i.Currency | safe }}{{i.Price | safe }}
+                  </span>
+                  <a href="{{i.get_absolute_url | safe }}" class="aa-secondary-btn">View Details</a>
+                </div>
+              </div>
+            </article>
+          </div>
+          {% endfor %}
+          <div class="aa-properties-content-bottom">
+            {# "View More" button #}
+            <div class="aa-properties-view-more">
+                <a href="{% url 'latest'  %}" class="aa-secondary-btn">View More</a>
+            </div>
+        </div>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / Popular property -->
 
 {% endblock %}

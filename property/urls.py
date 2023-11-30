@@ -30,7 +30,7 @@ urlpatterns = [
     path('property/', views.PROP, name='property'),
     path('property/<slug:slug>', views.PROP_DETAIL, name='property_detail'),
     path('property/<str:category>/', views.PROP_CATEGORY, name='property_category'),
-    path('latest/<str:latest>/', views.PROP_LATEST, name='latest'),
+    path('latest/', views.PROP_LATEST, name='latest'),
     path('category/<str:category>/', views.CAT_DETAIL, name='category'),
 
     # Gallery
