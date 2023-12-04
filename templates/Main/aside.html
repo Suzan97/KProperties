@@ -1,0 +1,47 @@
+
+<div class="col-md-4">
+    <aside class="aa-properties-sidebar">
+      <!-- Start Single properties sidebar -->
+      <div class="aa-properties-single-sidebar">
+        <h3>Properties Search</h3>
+        <form method="GET" action="{% url 'search_results' %}">
+          <div class="aa-single-advance-search">
+            <input type="text" name="location" placeholder="Type Your Location">
+          </div>
+          <div class="aa-single-advance-search">
+            <input type="text" name="name" placeholder="Property Name">
+          </div>
+          <div class="aa-single-advance-search">
+            <select name="category">
+             <option selected="" value="">Category</option>
+              {% for cat in sub_cat %}
+              <option value="{{ cat.id }}">{{ cat.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="aa-single-advance-search">
+            <input type="submit" value="Search" class="aa-search-btn">
+          </div>
+        </form>
+      </div>
+    
+      <!-- Start Single properties sidebar -->
+    <div class="aa-properties-single-sidebar">
+        <h3>Popular Properties</h3>
+        {% for i in pop_property %}
+        <div class="media">
+          <div class="media-left">
+            <a href="{{i.get_absolute_url }}">
+              <img class="media-object" src="{{i.Property_image.url}}" alt="img">
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading"><a href="{{i.get_absolute_url }}">{{i.Property_name}}</a></h4>
+            <p>{{i.Short_description}}</p>                
+            <span>{{i.Currency}}{{i.Price}}</span>
+          </div>              
+        </div>
+        {% endfor %}
+      </div>
+    </aside>
+  </div>

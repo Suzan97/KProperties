@@ -3,203 +3,205 @@
 {% block content %}
 
 <section id="aa-menu-area">
-    <nav class="navbar navbar-default main-navbar" role="navigation">  
-      <div class="container">
-        <div class="navbar-header">
-          <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- LOGO -->                                               
-          <!-- Text based logo -->
-          <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
-          <!-- Image based logo -->
-          <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->                     
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
-            <li><a href="{% url 'home' %}">HOME</a></li>
-            <li><a href="{% url 'property' %}">PROPERTIES</a></li> 
-            <li><a href="{% url 'gallery' %}">GALLERY</a></li>                                         
-            <li><a href="{% url 'contact' %}">CONTACT</a></li>
-          </ul>                               
-        </div><!--/.nav-collapse -->       
-      </div>          
-    </nav> 
-  </section>
-
-   <!-- Start Proerty header  -->
-
-   <section id="aa-property-header">
+  <nav class="navbar navbar-default main-navbar" role="navigation">
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="aa-property-header-inner">
-            <h2>Properties Details</h2>
-            <ol class="breadcrumb">
-            <li><a href="{% url 'home'  %}">HOME</a></li>            
+      <div class="navbar-header">
+        <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- LOGO -->
+        <!-- Text based logo -->
+        <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
+        <!-- Image based logo -->
+        <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+          <li><a href="{% url 'home' %}">HOME</a></li>
+          <li><a href="{% url 'property' %}">PROPERTIES</a></li>
+          <li><a href="{% url 'gallery' %}">GALLERY</a></li>
+          <li><a href="{% url 'contact' %}">CONTACT</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+</section>
+
+<!-- Start Proerty header  -->
+
+<section id="aa-property-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="aa-property-header-inner">
+          <h2>Properties Details</h2>
+          <ol class="breadcrumb">
+            <li><a href="{% url 'home'  %}">HOME</a></li>
             <li class="active">{{property.Property_name}}</li>
           </ol>
-          </div>
         </div>
       </div>
     </div>
-  </section> 
-  <!-- End Proerty header  -->  
-  <!-- Start Properties  -->
-  <section id="aa-properties">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="aa-properties-content">            
-            <!-- Start properties content body -->
-            <div class="aa-properties-details">
-             <div class="aa-properties-details-img">
+  </div>
+</section>
+<!-- End Proerty header  -->
+<!-- Start Properties  -->
+<section id="aa-properties">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="aa-properties-content">
+          <!-- Start properties content body -->
+          <div class="aa-properties-details">
+            <div class="aa-properties-details-img">
               {% for i in image %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ i.Image_url.url }}" alt="Property Image">
-                </div>
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ i.Image_url.url }}" alt="Property Image">
+              </div>
               {% endfor %}
-             </div>
-             <div class="aa-properties-info">
-               <h2>{{property.Property_name | safe }}</h2>
-               <span class="aa-price">{{property.Currency | safe }}{{property.Price | safe }}</span>
-               <p>{{ property.Description | safe }}</p>
-               <h4>Propery Features</h4>
-               <ul>
+            </div>
+            <div class="aa-properties-info">
+              <h2>{{property.Property_name | safe }}, {{property.Location}}</h2>
+              <span class="aa-price">{{property.Currency | safe }}{{property.Price | safe }}</span>
+              <p>{{ property.Description | safe }}</p>
+              <h4>Propery Features</h4>
+              <ul>
                 {% for i in add_info %}
-                 <li>{{i.features | safe }}</li>
+                <li>{{i.features | safe }}</li>
                 {% endfor %}
-               </ul>
-               <h4>Property Video</h4>
-               {% if property.Property_video %}
-               <iframe width="100%" height="480" src="{{property.Property_video.url}}" frameborder="0" allowfullscreen>
-                <p>Your browser does not support the video tag</p> 
-               </iframe>
-                  {% endif %}
-                {% if properties|length == 0 %}
-                  <p>No video found.</p>
-                {% endif %}
-                <h4>Property Map</h4>
-               <iframe src="{{location_url}}" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-             </div>
-                
+              </ul>
+              <h4>Property Video</h4>
+              {% if property.Property_video %}
+              <iframe width="100%" height="480" src="{{property.Property_video.url}}" frameborder="0" allowfullscreen>
+                <p>Your browser does not support the video tag</p>
+              </iframe>
+              {% endif %}
+              {% if properties|length == 0 %}
+              <p>No video found.</p>
+              {% endif %}
+              <h4>Property Map</h4>
+              <iframe src="{{location_url}}" width="100%" height="450" frameborder="0" style="border:0"
+                allowfullscreen></iframe>
+            </div>
 
-             <!-- Properties social share -->
-             <div class="aa-properties-social">
-               <ul>
-                 <li>Share</li>
-                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                 <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                 <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-               </ul>
-             </div>
-             <!-- Nearby properties -->
-             <div class="aa-nearby-properties">
-               <div class="aa-title">
-                 <h2>Nearby Properties</h2>
-                 <span></span>
-               </div>
-               <div class="aa-nearby-properties-area">
-                 <div class="row">
+
+            <!-- Properties social share -->
+            <div class="aa-properties-social">
+              <ul>
+                <li>Share</li>
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+              </ul>
+            </div>
+            <!-- Nearby properties -->
+            <div class="aa-nearby-properties">
+              <div class="aa-title">
+                <h2>Nearby Properties</h2>
+                <span></span>
+              </div>
+              <div class="aa-nearby-properties-area">
+                <div class="row">
                   {% if nearby_prop %}
                   {% for i in nearby_prop %}
-                   <div class="col-md-6">
-                     <article class="aa-properties-item">
-                        <a class="aa-properties-item-img" href="#">
-                          <img alt="img" src="{{i.Property_image.url}}">
-                        </a>
-                        <div class="aa-tag for-sale">
-                          For Sale
-                        </div>
-                        <div class="aa-properties-item-content">
-                          <div class="aa-properties-info">
-                            <span>5 Rooms</span>
-                            <span>2 Beds</span>
-                            <span>3 Baths</span>
-                            <span>1100 SQ FT</span>
-                          </div>
-                          <div class="aa-properties-about">
-                            <h3><a href="#">{{i.Property_name}}</a></h3>
-                            <p>{{i.Short_description}}</p>                      
-                          </div>
-                          <div class="aa-properties-detial">
-                            <span class="aa-price">
-                              {{i.Currency}}{{i.Price}}
-                            </span>
-                            <a class="aa-secondary-btn" href="{{i.get_absolute_url | safe }}">View Details</a>
-                          </div>
-                        </div>
-                      </article>
-                   </div>
-                   {% endfor %}
-                   {% else %}
-                   <div class="col-md-12">
-                    <p> No more properties nearby </p>
-                   </div>
-                   {% endif %}
-                 </div>
-               </div>
-
-             </div>
-
-            </div>           
-          </div>
-        </div>
-                <!-- Start properties sidebar -->
-                <div class="col-md-4">
-                  <aside class="aa-properties-sidebar">
-                    <!-- Start Single properties sidebar -->
-                    <div class="aa-properties-single-sidebar">
-                      <h3>Properties Search</h3>
-                      <form method="GET" action="{% url 'search_results' %}">
-                        <div class="aa-single-advance-search">
-                          <input type="text" name="location" placeholder="Type Your Location">
-                        </div>
-                        <div class="aa-single-advance-search">
-                          <input type="text" name="name" placeholder="Property Name">
-                        </div>
-                        <div class="aa-single-advance-search">
-                          <select name="category">
-                           <option selected="" value="">Category</option>
-                            {% for cat in sub_cat %}
-                            <option value="{{ cat.id }}">{{ cat.name }}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
-                        <div class="aa-single-advance-search">
-                          <input type="submit" value="Search" class="aa-search-btn">
-                        </div>
-                      </form>
-                    </div> 
-                    <!-- Start Single properties sidebar -->
-                    <div class="aa-properties-single-sidebar">
-                      <h3>Similar Properties</h3>
-                      {% for x in same_prop %}
-                      <div class="media">
-                        <div class="media-left">
-                          <a href="{{x.get_absolute_url }}">
-                            <img class="media-object" src="{{x.Property_image.url}}" alt="img">
-                          </a>
-                        </div>
-                        <div class="media-body">
-                          <h4 class="media-heading"><a href="{{ x.get_absolute_url }}">{{x.Property_name}}</a></h4>
-                          <p>{{x.Short_description}}</p>                
-                          <span>{{x.Currency}}{{x.Price}}</span>
-                        </div>              
+                  <div class="col-md-6">
+                    <article class="aa-properties-item">
+                      <a class="aa-properties-item-img" href="#">
+                        <img alt="img" src="{{i.Property_image.url}}">
+                      </a>
+                      <div class="aa-tag for-sale">
+                        For Sale
                       </div>
-                      {% endfor %}
-                    </div>
-                  </aside>
+                      <div class="aa-properties-item-content">
+                        <div class="aa-properties-info">
+                          <span>5 Rooms</span>
+                          <span>2 Beds</span>
+                          <span>3 Baths</span>
+                          <span>1100 SQ FT</span>
+                        </div>
+                        <div class="aa-properties-about">
+                          <h3><a href="#">{{i.Property_name}}</a></h3>
+                          <p>{{i.Short_description}}</p>
+                        </div>
+                        <div class="aa-properties-detial">
+                          <span class="aa-price">
+                            {{i.Currency}}{{i.Price}}
+                          </span>
+                          <a class="aa-secondary-btn" href="{{i.get_absolute_url | safe }}">View Details</a>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  <div class="col-md-12">
+                    <p> No more properties nearby </p>
+                  </div>
+                  {% endif %}
                 </div>
               </div>
+
             </div>
-          </section>
-          <!-- / Properties  -->
+
+          </div>
+        </div>
+      </div>
+      <!-- Start properties sidebar -->
+      <div class="col-md-4">
+        <aside class="aa-properties-sidebar">
+          <!-- Start Single properties sidebar -->
+          <div class="aa-properties-single-sidebar">
+            <h3>Properties Search</h3>
+            <form method="GET" action="{% url 'search_results' %}">
+              <div class="aa-single-advance-search">
+                <input type="text" name="location" placeholder="Type Your Location">
+              </div>
+              <div class="aa-single-advance-search">
+                <input type="text" name="name" placeholder="Property Name">
+              </div>
+              <div class="aa-single-advance-search">
+                <select name="category">
+                  <option selected="" value="">Category</option>
+                  {% for cat in sub_cat %}
+                  <option value="{{ cat.id }}">{{ cat.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="aa-single-advance-search">
+                <input type="submit" value="Search" class="aa-search-btn">
+              </div>
+            </form>
+          </div>
+          <!-- Start Single properties sidebar -->
+          <div class="aa-properties-single-sidebar">
+            <h3>Similar Properties</h3>
+            {% for x in same_prop %}
+            <div class="media">
+              <div class="media-left">
+                <a href="{{x.get_absolute_url }}">
+                  <img class="media-object" src="{{x.Property_image.url}}" alt="img">
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading"><a href="{{ x.get_absolute_url }}">{{x.Property_name}}</a></h4>
+                <p>{{x.Short_description}}</p>
+                <span>{{x.Currency}}{{x.Price}}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / Properties  -->
 
 
 {% endblock %}

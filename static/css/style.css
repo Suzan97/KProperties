@@ -848,25 +848,26 @@ LATEST PROPERTY SECTION
  POPULAR PROPERTY SECTION
 ====================*/
 
-#aa-latest-property {
-  background-color: #f8f8f8;
+#aa-popular-property {
+
   display: inline;
   float: left;
   width: 100%;
-  padding: 100px 0;
+  padding: 30px 0;
+  border-top: 1px solid #ddd;
 
 }
-#aa-latest-property .aa-latest-property-area {
+#aa-popular-property .aa-popular-property-area {
   display: inline;
   float: left;
   width: 100%;
   
 }
-#aa-latest-property .container {
+#aa-popular-property .container {
   border-radius: 15px; /* Add border-radius for curved container */
 }
 
-#aa-latest-property .aa-latest-property-area .aa-latest-properties-content {
+#aa-popular-property .aa-popular-property-area .aa-popular-properties-content {
   display: inline;
   float: left;
   margin-top: 20px;
@@ -993,6 +994,7 @@ LATEST PROPERTY SECTION
   padding: 8px 15px; /* Adjust the padding as needed */
   margin-top: 5px; /* Add space between price and button */
 }
+
 
 
 /*==================

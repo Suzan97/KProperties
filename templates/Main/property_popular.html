@@ -1,58 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
-{% load static %}
-<section id="aa-menu-area">
-    <nav class="navbar navbar-default main-navbar" role="navigation">  
-      <div class="container">
-        <div class="navbar-header">
-          <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- LOGO -->                                               
-          <!-- Text based logo -->
-          <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
-          <!-- Image based logo -->
-          <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->                     
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
-            <li><a href="{% url 'home' %}">HOME</a></li>
-            <li class="dropdown active">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'property' %}">PROPERTIES <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">                
-                <li><a href="{% url 'property' %}">All Properties</a></li>
-                {% for cat in sub_cat %}
-                <li><a href="{% url 'property_category' cat.name %}">{{cat.name}}</a></li>     
-                {% endfor %}                                      
-              </ul>
-            </li>
-            <li><a href="{% url 'gallery' %}">GALLERY</a></li>                                         
-            <li><a href="{% url 'contact' %}">CONTACT</a></li>
-          </ul>                               
-        </div><!--/.nav-collapse -->       
-      </div>          
-    </nav> 
-  </section>
+    {% load static %}
+    <section id="aa-menu-area">
+        <nav class="navbar navbar-default main-navbar" role="navigation">  
+        <div class="container">
+            <div class="navbar-header">
+            <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- LOGO -->                                               
+            <!-- Text based logo -->
+            <a class="navbar-brand aa-logo" href="{% url 'home' %}"> Khumo <span>Properties</span></a>
+            <!-- Image based logo -->
+            <!-- <a class="navbar-brand aa-logo-img" href="index.html"><img src="img/logo.png" alt="logo"></a> -->                     
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+            <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+                <li><a href="{% url 'home' %}">HOME</a></li>
+                <li class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'property' %}">PROPERTIES <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">                
+                      <li><a href="{% url 'property' %}">All Properties</a></li>
+                      {% for cat in categories %}
+                        <li><a href="{% url 'property_category' cat %}">{{cat}}</a></li>     
+                      {% endfor %}                                      
+                    </ul>
+                  </li>
+                <li><a href="{% url 'gallery' %}">GALLERY</a></li>                                         
+                <li><a href="{% url 'contact' %}">CONTACT</a></li>
+            </ul>                               
+            </div><!--/.nav-collapse -->       
+        </div>          
+        </nav> 
+    </section>
 
-<section id="aa-property-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="aa-property-header-inner">
-            <h2>{{category}} PROPERTIES</h2>
-            <ol class="breadcrumb">
-            <li><a href="{% url 'home' %}">HOME</a></li>            
-            <li class="active">Results</li>
-          </ol>
-          </div>
+    <section id="aa-property-header">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            <div class="aa-property-header-inner">
+                <h2>POPULAR PROPERTIES</h2>
+                <ol class="breadcrumb">
+                <li><a href="{% url 'home' %}">HOME</a></li>            
+                <li class="active">Results</li>
+            </ol>
+            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+        </div>
+    </section>
 
   <section id="aa-properties">
     <div class="container">
@@ -87,16 +87,13 @@
             </div>
                 <!-- Start properties content body -->
                 <div class="aa-properties-content-body">
-                    {% for i in property%}
+                    {% for i in popular %}
                     <ul class="aa-properties-nav">
                       <li>
                         <article class="aa-properties-item">
                           <a class="aa-properties-item-img" href="#">
                             <img alt="img" src="{{i.Property_image.url}}">
                           </a>
-                          <div class="aa-tag for-rent">
-                            {{i.Category}}
-                          </div>
                           <div class="aa-properties-item-content">
                             <div class="aa-properties-info">
                               <span>5 Rooms</span>
@@ -162,7 +159,7 @@
                 </div>
               </div>
               <!-- Start properties sidebar -->
-                {% include 'Main/aside.html' %}
+              {% include 'Main/aside.html' %}
         </div>
       </div>
     </section>

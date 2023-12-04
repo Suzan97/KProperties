@@ -15,12 +15,13 @@ def BASE(request):
 def HOME(request):
     slider = Slider.objects.all().order_by('-id')[0:3]
     property = Property.objects.all().order_by('-date_added')[:4]
+    pop_property = Property.objects.all().order_by('-page_visits')[:4]
     main_cat = Main_Category.objects.all().distinct('name')
     sub_cat = Category.objects.all().distinct('name')
-    latest = Property.objects.order_by('-date_added')[:12]
+    latest = Property.objects.order_by('-date_added')[:4]
     
 
-    context = {'slider': slider, 'property': property, 'main_cat':main_cat, 'sub_cat':sub_cat,
+    context = {'slider': slider, 'property': property,'pop_property':pop_property, 'main_cat':main_cat, 'sub_cat':sub_cat,
                'latest':latest}
     return render(request, 'Main/index.html', context)
 
@@ -60,31 +61,52 @@ def CAT_DETAIL(request, category):
                'pop_property': pop_property, 'categories':categories, 'sub_cat':sub_cat}
     return render(request, 'Main/category.html', context)
 
+
 def PROP_LATEST(request):
     property = Property.objects.all()
     latest_prop = Property.objects.order_by('-date_added')
     pop_property = Property.objects.order_by('-page_visits')[:3]
+    
+    categories = set(property.Category.name for property in property)
+
 
     items_per_page = 6
     property_page = paginate_queryset(latest_prop, request, items_per_page)
 
-    context = {'property':property, 'property':property_page, 'latest_prop':latest_prop }
+    context = {'property':property, 'property':property_page, 'latest_prop':latest_prop, 'categories':categories }
 
     return render(request,  'Main/property_latest.html', context)  
 
+def PROP_POPULAR(request):
+    property = Property.objects.all()
+    popular = Property.objects.all().order_by('-page_visits')[:4]
+    pop_property = Property.objects.order_by('-page_visits')[:3]
+
+    categories = set(property.Category.name for property in property)
+
+
+    items_per_page = 6
+    property_page = paginate_queryset(property, request, items_per_page)
+
+    context = {'property':property, 'property':property_page, 'popular':popular , 'pop_property':pop_property,
+                'categories':categories }
+
+    return render(request,  'Main/property_popular.html', context)  
+
 def PROP_CATEGORY(request,category):
     property = Property.objects.filter(Category__name=category)
-
+    pop_property = Property.objects.order_by('-page_visits')[:3]
+    sub_cat = Category.objects.all().distinct('name')
     # Use the main category in the query
-    main_category_instance = get_main_category_name_dynamically(category)
-    property_main = Property.objects.filter(Category__main_category=main_category_instance)
+    # main_category_instance = get_main_category_name_dynamically(category)
+    # property_main = Property.objects.filter(Category__main_category=main_category_instance)
 
     items_per_page = 10
     property_page = paginate_queryset(property, request, items_per_page)
     # display categories in dropdown
     categories = set(property.Category.name for property in property)
 
-    context = {'property':property_page, 'category': category, 'main_category_instance': main_category_instance, 'property_main':property_main}
+    context = {'property':property_page, 'pop_property':pop_property, 'sub_cat':sub_cat, 'category': category, 'categories':categories}
     return render(request, 'Main/property_category.html', context)
 
 def PROP_DETAIL(request,slug):
@@ -151,7 +173,11 @@ def PROP_SEARCH(request):
 
     property = property.filter(**query_params)
 
-    context = {'property': property, 'pop_property':pop_property, 'location': location, 'name': name, 'category': category, 'sub_cat':sub_cat}
+    categories = set(property.Category.name for property in property)
+
+
+    context = {'property': property, 'pop_property':pop_property, 'location': location, 'name': name,
+                'category': category, 'sub_cat':sub_cat, 'categories':categories}
     return render(request, 'Main/search_results.html', context)
 
 

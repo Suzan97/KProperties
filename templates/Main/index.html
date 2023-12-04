@@ -143,13 +143,16 @@
       </div>
       <div class="aa-latest-properties-content">
         <div class="row">
-          {% for i in property %}
+          {% for i in latest %}
           <div class="col-md-3">
             <article class="aa-properties-item">
               <a href="{{i.get_absolute_url | safe }}" class="aa-properties-item-img">
                 <img src="{{i.Property_image.url}}" alt="img">
               </a>
               <div class="aa-properties-item-content">
+                <div class="aa-properties-info">
+                  <span>{{i.Location}}</span>
+                </div>
                 <div class="aa-properties-about">
                   <h3><a href="{{i.get_absolute_url | safe }}">{{i.Property_name | safe }}</a></h3>
                   <p>{{i.Short_description}}</p>
@@ -179,17 +182,17 @@
 <!-- / Latest property -->
 
 <!-- Popular property -->
-<section id="aa-latest-property">
+<section id="aa-popular-property">
   <div class="container">
-    <div class="aa-latest-property-area">
+    <div class="aa-popular-property-area">
       <div class="aa-title">
-        <h2>Latest Properties</h2>
+        <h2>Popular Properties</h2>
         <span></span>
-        <p>This are our latest properties, check them out.</p>
+        <p>This are our popular properties, check them out.</p>
       </div>
-      <div class="aa-latest-properties-content">
+      <div class="aa-popular-properties-content">
         <div class="row">
-          {% for i in property %}
+          {% for i in pop_property %}
           <div class="col-md-3">
             <article class="aa-properties-item">
               <a href="{{i.get_absolute_url | safe }}" class="aa-properties-item-img">
@@ -213,7 +216,7 @@
           <div class="aa-properties-content-bottom">
             {# "View More" button #}
             <div class="aa-properties-view-more">
-                <a href="{% url 'latest'  %}" class="aa-secondary-btn">View More</a>
+                <a href="{% url 'popular'  %}" class="aa-secondary-btn">View More</a>
             </div>
         </div>
         
