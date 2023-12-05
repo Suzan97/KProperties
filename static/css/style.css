@@ -1611,8 +1611,8 @@ LATEST PROPERTY SECTION
 #aa-properties .aa-properties-content .aa-properties-content-body .aa-properties-nav li {
   display: block;
   float: left;
-  margin: 0 0 20px 30px;
-  width: 46.1%;
+  margin: 0 0 20px 50px;
+  width: 43%;
 }
 #aa-properties .aa-properties-content .aa-properties-content-body .aa-list-view {
   margin-left: 0;

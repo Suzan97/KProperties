@@ -13,7 +13,7 @@ CURRENCY_CHOICES = (
     )
 class Slider(models.Model):
 
-    Image = models.ImageField(upload_to='media/slider_imgs')
+    Image = models.ImageField(upload_to='slider_imgs')
     Property_name = models.CharField(max_length=200)
     size = models.CharField(max_length=200, null = True)
     Location = models.CharField(max_length=200, null=True)

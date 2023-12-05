@@ -85,10 +85,12 @@
               <p>No video found.</p>
               {% endif %}
               <h4>Property Map</h4>
-              <iframe src="{{location_url}}" width="100%" height="450" frameborder="0" style="border:0"
-                allowfullscreen></iframe>
-            </div>
-
+                {% if location_url %}
+              <iframe src="{{ location_url }}" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                {% else %}
+                  <p>Currently not available</p>
+                {% endif %}
+  </div>
 
             <!-- Properties social share -->
             <div class="aa-properties-social">
@@ -109,42 +111,36 @@
               <div class="aa-nearby-properties-area">
                 <div class="row">
                   {% if nearby_prop %}
-                  {% for i in nearby_prop %}
-                  <div class="col-md-6">
-                    <article class="aa-properties-item">
-                      <a class="aa-properties-item-img" href="#">
-                        <img alt="img" src="{{i.Property_image.url}}">
-                      </a>
-                      <div class="aa-tag for-sale">
-                        For Sale
-                      </div>
-                      <div class="aa-properties-item-content">
-                        <div class="aa-properties-info">
-                          <span>5 Rooms</span>
-                          <span>2 Beds</span>
-                          <span>3 Baths</span>
-                          <span>1100 SQ FT</span>
-                        </div>
-                        <div class="aa-properties-about">
-                          <h3><a href="#">{{i.Property_name}}</a></h3>
-                          <p>{{i.Short_description}}</p>
-                        </div>
-                        <div class="aa-properties-detial">
-                          <span class="aa-price">
-                            {{i.Currency}}{{i.Price}}
-                          </span>
-                          <a class="aa-secondary-btn" href="{{i.get_absolute_url | safe }}">View Details</a>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                  {% endfor %}
+                      {% for i in nearby_prop %}
+                          <div class="col-md-6">
+                              <article class="aa-properties-item">
+                                  <a class="aa-properties-item-img" href="#">
+                                      <img alt="img" src="{{i.Property_image.url}}">
+                                  </a>
+                                  <div class="aa-properties-item-content">
+                                      <div class="aa-properties-info">
+                                          <span>{{i.Location}}</span>
+                                      </div>
+                                      <div class="aa-properties-about">
+                                          <h3><a href="#">{{i.Property_name}}</a></h3>
+                                          <p>{{i.Short_description}}</p>
+                                      </div>
+                                      <div class="aa-properties-detial">
+                                          <span class="aa-price">
+                                              {{i.Currency}}{{i.Price}}
+                                          </span>
+                                          <a class="aa-secondary-btn" href="{{i.get_absolute_url | safe }}">View Details</a>
+                                      </div>
+                                  </div>
+                              </article>
+                          </div>
+                      {% endfor %}
                   {% else %}
-                  <div class="col-md-12">
-                    <p> No more properties nearby </p>
-                  </div>
+                      <div class="col-md-12">
+                          <p>No more properties nearby</p>
+                      </div>
                   {% endif %}
-                </div>
+              </div>      
               </div>
 
             </div>
@@ -181,21 +177,26 @@
           <!-- Start Single properties sidebar -->
           <div class="aa-properties-single-sidebar">
             <h3>Similar Properties</h3>
-            {% for x in same_prop %}
-            <div class="media">
-              <div class="media-left">
-                <a href="{{x.get_absolute_url }}">
-                  <img class="media-object" src="{{x.Property_image.url}}" alt="img">
-                </a>
-              </div>
-              <div class="media-body">
-                <h4 class="media-heading"><a href="{{ x.get_absolute_url }}">{{x.Property_name}}</a></h4>
-                <p>{{x.Short_description}}</p>
-                <span>{{x.Currency}}{{x.Price}}</span>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
+            {% if same_prop %}
+                {% for x in same_prop %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ x.get_absolute_url }}">
+                                <img class="media-object" src="{{ x.Property_image.url }}" alt="img">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="{{ x.get_absolute_url }}">{{ x.Property_name }}</a></h4>
+                            <p>{{ x.Short_description }}</p>
+                            <span>{{ x.Currency }}{{ x.Price }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No similar properties found.</p>
+            {% endif %}
+        </div>
+        
         </aside>
       </div>
     </div>

@@ -26,9 +26,9 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'property' %}">PROPERTIES <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">                
                 <li><a href="{% url 'property' %}">All Properties</a></li>
-                {% for cat in categories %}
-                  <li><a href="{% url 'property_category' cat %}">{{cat}}</a></li>     
-                {% endfor %}                                      
+                {% for cat in sub_cat %}
+                <li><a href="{% url 'property_category' cat.name %}">{{cat.name}}</a></li>     
+                {% endfor %}                               
               </ul>
             </li>
             <li><a href="{% url 'gallery' %}">GALLERY</a></li> 
@@ -99,15 +99,9 @@
                           <a class="aa-properties-item-img" href="#">
                             <img alt="img" src="{{i.Property_image.url}}">
                           </a>
-                          <div class="aa-tag for-rent">
-                            {{i.Category}}
-                          </div>
                           <div class="aa-properties-item-content">
                             <div class="aa-properties-info">
-                              <span>5 Rooms</span>
-                              <span>2 Beds</span>
-                              <span>3 Baths</span>
-                              <span>1100 SQ FT</span>
+                              <span>{{i.Location}}</span>
                             </div>
                             <div class="aa-properties-about">
                               <h3><a href="{{i.get_absolute_url | safe }}">{{i.Property_name}}</a></h3>

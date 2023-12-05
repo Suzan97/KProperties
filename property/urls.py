@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler404
 
 from .import views
+
+handler404 = 'property.views.handler404'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,10 +37,12 @@ urlpatterns = [
     path('popular/', views.PROP_POPULAR, name='popular'),
     path('category/<str:category>/', views.CAT_DETAIL, name='category'),
 
+
     # Gallery
     path('gallery/', views.GALLERY, name='gallery'),
     path('search/', views.PROP_SEARCH, name='search_results'),
     # Contact Us
-    path('contact/', views.CONTACT, name='contact')
+    path('contact/', views.CONTACT, name='contact'),
+   
 
 ] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT) 

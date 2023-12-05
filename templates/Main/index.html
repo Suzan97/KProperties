@@ -44,7 +44,7 @@
       <!-- Top slider single slide -->
       {% for i in slider %}
       <div class="aa-top-slider-single">
-        <img src="{{i.Image}}" alt="img">
+        <img src="{{ MEDIA_URL }}{{ i.Image.url }}" alt="img">
         <!-- Top slider content -->
         <div class="aa-top-slider-content">
           <span class="aa-top-slider-catg">{{i.Property_name}}</span>

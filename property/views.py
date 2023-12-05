@@ -8,9 +8,15 @@ from django.db.models import F
 from django.db.models import Q
 from .forms import PropertySearch
 from django.utils import timezone
+from urllib.parse import unquote,quote
+from django.http import Http404
+
 
 def BASE(request):
     return render(request, 'base.html')
+    
+def handler404(request, exception):
+    return render(request, 'Error_404.html', status=404)
 
 def HOME(request):
     slider = Slider.objects.all().order_by('-id')[0:3]
@@ -26,7 +32,7 @@ def HOME(request):
     return render(request, 'Main/index.html', context)
 
 def PROP(request):
-    property = Property.objects.all().order_by('id')
+    property = Property.objects.all().order_by('-date_added')
     items_per_page = 10
     pop_property = Property.objects.order_by('-page_visits')[:3]
     sub_cat = Category.objects.all().distinct('name')
@@ -38,17 +44,67 @@ def PROP(request):
     context = {'property': property_page, 'pop_property':pop_property, 'categories':categories, 'sub_cat':sub_cat}
     return render(request, 'Main/property.html', context)
 
+
+def get_current_datetime(request):
+    current_datetime = timezone.now()
+
+def PROP_DETAIL(request,slug):
+    property = get_object_or_404(Property, slug = slug)
+    sub_cat = Category.objects.all().distinct('name')
+    property.page_visits +=1
+    property.save()
+
+    location_url = property.location_url 
+
+    tags_list = [tag.strip().lower() for tag in property.Tags.split(',') if tag.strip()]
+
+    # Construct a Q object for each tag in tags_list
+    tag_queries = [Q(Tags__icontains=tag) for tag in tags_list]
+
+    # Combine the Q objects with OR conditions
+    combined_tags_query = Q()
+    for tag_query in tag_queries:
+        combined_tags_query |= tag_query
+
+    same_prop = Property.objects.filter(
+        combined_tags_query
+    ).exclude(id=property.id).distinct()[:3]
+
+    print('tags_list:', tags_list)
+    print('same_prop:', same_prop)
+
+    pop_property =  Property.objects.order_by('-page_visits')[:3]
+    nearby_prop = Property.objects.filter(
+            Q(Location__icontains=property.Location)).exclude(id=property.id)
+    image = Property_Image.objects.filter(property=property)
+    add_info = Additional_Information.objects.filter(property=property)
+
+    context = {'property': property,'sub_cat':sub_cat , 'location_url': location_url, 'same_prop':same_prop,
+                'image':image, 'add_info': add_info, 'nearby_prop': nearby_prop, 'pop_property': pop_property }
+    return render(request, 'Main/property_detail.html', context)
+
 def get_main_category_name_dynamically(name):
     # Your logic to determine the main category dynamically
     # For simplicity, let's assume it returns a Main_Category instance
-    return Main_Category.objects.get(name=name)
+    decoded_name = unquote(name)
+    try:
+        # Use get() with an exception for DoesNotExist
+        return Main_Category.objects.get(name=decoded_name)
+    except Main_Category.DoesNotExist:
+        raise Http404("Currently unavailable")
 
 
 def CAT_DETAIL(request, category):
-    main_category_instance = get_main_category_name_dynamically(category)
+    decoded_category = unquote(category)
+    main_category_instance = get_main_category_name_dynamically(decoded_category)
     property = Property.objects.filter(Category__main_category__name=main_category_instance.name)
     property_main = Property.objects.filter(Category__main_category=main_category_instance)
     pop_property = Property.objects.order_by('-page_visits')[:3]
+    
+    if main_category_instance is None:
+        # Handle the case where the category doesn't exist
+        context = {'error': 'Category currently not available'}
+        return render(request, 'Error_404.html', context)
 
     categories = set(property.Category.name for property in property)
     sub_cat = Category.objects.all().distinct('name')
@@ -57,10 +113,26 @@ def CAT_DETAIL(request, category):
     property_page = paginate_queryset(property, request, items_per_page)
 
     print("property_page length:", len(property_page))
-    context = {'category': category, 'main_category_instance': main_category_instance,'property':property_page, 'property_main':property_main,
+    context = {'category': decoded_category, 'main_category_instance': main_category_instance,'property':property_page, 'property_main':property_main,
                'pop_property': pop_property, 'categories':categories, 'sub_cat':sub_cat}
     return render(request, 'Main/category.html', context)
 
+def PROP_CATEGORY(request, category):
+    decoded_category = unquote(category)
+    property = Property.objects.filter(Category__name=decoded_category)
+    pop_property = Property.objects.order_by('-page_visits')[:3]
+    sub_cat = Category.objects.all().distinct('name')
+
+    items_per_page = 10
+    property_page = paginate_queryset(property, request, items_per_page)
+    categories = set(property.Category.name for property in property)
+
+    if not property.exists():  # Check if the queryset is empty
+        print(f"No properties found for category: {decoded_category}")
+        return render(request, 'Main/Error_404.html', {'error_message': 'No properties currently available for this category.'})
+
+    context = {'property': property_page, 'pop_property': pop_property, 'sub_cat': sub_cat, 'category': decoded_category, 'categories': categories}
+    return render(request, 'Main/property_category.html', context)
 
 def PROP_LATEST(request):
     property = Property.objects.all()
@@ -92,52 +164,6 @@ def PROP_POPULAR(request):
                 'categories':categories }
 
     return render(request,  'Main/property_popular.html', context)  
-
-def PROP_CATEGORY(request,category):
-    property = Property.objects.filter(Category__name=category)
-    pop_property = Property.objects.order_by('-page_visits')[:3]
-    sub_cat = Category.objects.all().distinct('name')
-    # Use the main category in the query
-    # main_category_instance = get_main_category_name_dynamically(category)
-    # property_main = Property.objects.filter(Category__main_category=main_category_instance)
-
-    items_per_page = 10
-    property_page = paginate_queryset(property, request, items_per_page)
-    # display categories in dropdown
-    categories = set(property.Category.name for property in property)
-
-    context = {'property':property_page, 'pop_property':pop_property, 'sub_cat':sub_cat, 'category': category, 'categories':categories}
-    return render(request, 'Main/property_category.html', context)
-
-def PROP_DETAIL(request,slug):
-    property = get_object_or_404(Property, slug = slug)
-    sub_cat = Category.objects.all().distinct('name')
-    property.page_visits +=1
-    property.save()
-
-    location_url = property.location_url
-
-    #similar property and order by date in descending order
-    same_category = Property.objects.filter(Category=property.Category).exclude(id=property.id)
-    same_prop = same_category.order_by('-date_added')[:3]
-    aware_date_added = property.date_added.astimezone(timezone.utc)
-    similar = Property.objects.filter(
-        Category = property.Category,
-        date_added__lt=aware_date_added
-    ).exclude(id=property.id).order_by('-date_added')[:3]
-    print("Same category properties:", same_category)
-    print("More like this properties:", same_prop)
-    print("Aware date_added:", aware_date_added)
-
-
-    pop_property =  Property.objects.order_by('-page_visits')[:3]
-    nearby_prop = Property.objects.filter(Location=property.Location).exclude(id=property.id)
-    image = Property_Image.objects.filter(property=property)
-    add_info = Additional_Information.objects.filter(property=property)
-
-    context = {'property': property,'sub_cat':sub_cat , 'same_prop':same_prop, 'location_url': location_url, 'image':image, 'add_info': add_info, 'nearby_prop': nearby_prop,
-               'pop_property': pop_property }
-    return render(request, 'Main/property_detail.html', context)
 
 def GALLERY(request):
     gallery = Gallery.objects.all()
