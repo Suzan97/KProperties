@@ -70,14 +70,24 @@ def PROP_DETAIL(request,slug):
         combined_tags_query
     ).exclude(id=property.id).distinct()[:3]
 
-    print('tags_list:', tags_list)
-    print('same_prop:', same_prop)
+      # Construct a Q object for each word in the current property's location
+    location_words = property.Location.split()
+    location_queries = [Q(Location__icontains=word) for word in location_words]
+
+    # Combine the Q objects with OR conditions
+    combined_location_query = Q()
+    for location_query in location_queries:
+        combined_location_query |= location_query
 
     pop_property =  Property.objects.order_by('-page_visits')[:3]
     nearby_prop = Property.objects.filter(
-            Q(Location__icontains=property.Location)).exclude(id=property.id)
+        combined_location_query
+    ).exclude(id=property.id).distinct()[:3]
+    
     image = Property_Image.objects.filter(property=property)
     add_info = Additional_Information.objects.filter(property=property)
+    print('nearby location:', nearby_prop)
+
 
     context = {'property': property,'sub_cat':sub_cat , 'location_url': location_url, 'same_prop':same_prop,
                 'image':image, 'add_info': add_info, 'nearby_prop': nearby_prop, 'pop_property': pop_property }
