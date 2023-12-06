@@ -25,7 +25,7 @@ from .import views
 handler404 = 'property.views.handler404'
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('khp_admin/', admin.site.urls),
     
     path('base', views.BASE, name='base'),
     path('', views.HOME, name='home'),
