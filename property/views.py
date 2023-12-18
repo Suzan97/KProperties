@@ -127,9 +127,20 @@ def CAT_DETAIL(request, category):
                'pop_property': pop_property, 'categories':categories, 'sub_cat':sub_cat}
     return render(request, 'Main/category.html', context)
 
-def PROP_CATEGORY(request, category):
+def PROP_CATEGORY(request, category,main_category=None):
     decoded_category = unquote(category)
-    property = Property.objects.filter(Category__name=decoded_category)
+    decoded_main_category = None # Initialize the variable
+
+    if main_category:
+        decoded_main_category = unquote(main_category)
+        property = Property.objects.filter(
+            Category__main_category__name=decoded_main_category,
+            Category__name=decoded_category
+        )
+    else:
+        # If main_category is not provided, only filter by category
+        property = Property.objects.filter(Category__name=decoded_category)
+
     pop_property = Property.objects.order_by('-page_visits')[:3]
     sub_cat = Category.objects.all().distinct('name')
 
@@ -141,7 +152,7 @@ def PROP_CATEGORY(request, category):
         print(f"No properties found for category: {decoded_category}")
         return render(request, 'Main/Error_404.html', {'error_message': 'No properties currently available for this category.'})
 
-    context = {'property': property_page, 'pop_property': pop_property, 'sub_cat': sub_cat, 'category': decoded_category, 'categories': categories}
+    context = {'property': property_page, 'pop_property': pop_property, 'sub_cat': sub_cat, 'category': decoded_category, 'main_category': decoded_main_category, 'categories': categories}
     return render(request, 'Main/property_category.html', context)
 
 def PROP_LATEST(request):
